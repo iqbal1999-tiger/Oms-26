@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OceanQuest - Ocean Science Learning Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient Particle Canvas -->
+  <canvas id="ocean-particles"></canvas>
+
+  <!-- Onboarding Overlay (visible by default, hidden after submit) -->
+  <div id="onboarding-overlay" class="onboarding-overlay">
+    <div class="onboarding-card">
+      <div class="onboarding-header">
+        <div class="onboarding-wave">🌊</div>
+        <h1>Welcome to OceanQuest!</h1>
+        <p>Your journey to becoming an ocean science explorer starts here. Learn, play and protect our oceans!</p>
+      </div>
+      <form id="onboarding-form">
+        <div class="form-group">
+          <label for="onboard-name">Your Name *</label>
+          <input type="text" id="onboard-name" placeholder="e.g. Sifat Iqbal" required maxlength="40">
+        </div>
+        <div class="form-group">
+          <label for="onboard-location">Your Location *</label>
+          <input type="text" id="onboard-location" placeholder="e.g. Sylhet, Bangladesh" required maxlength="60">
+        </div>
+        <div class="form-group">
+          <label for="onboard-department">Your Department *</label>
+          <input type="text" id="onboard-department" placeholder="e.g. Department of CSE" required maxlength="60">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Start Exploring! 🚀</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-brand">🌊 OceanQuest</div>
+    <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+    <ul class="nav-links">
+      <li><a href="#dashboard" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+      <li><a href="#modules" class="nav-link" data-section="modules">Modules</a></li>
+      <li><a href="#challenges" class="nav-link" data-section="challenges">Challenges</a></li>
+      <li><a href="#quiz" class="nav-link" data-section="quiz">Quiz</a></li>
+      <li><a href="#leaderboard" class="nav-link" data-section="leaderboard">Leaderboard</a></li>
+      <li><a href="#visitors" class="nav-link" data-section="visitors">Visitors</a></li>
+      <li><a href="#suggestions" class="nav-link nav-link-highlight" data-section="suggestions">💡 Suggestions</a></li>
+      <li><a href="#developers" class="nav-link" data-section="developers">Developers</a></li>
+    </ul>
+  </nav>
+
+  <!-- Dashboard Section -->
+  <section id="dashboard" class="section active">
+    <div class="container">
+      <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=900&h=300&fit=crop&q=80" alt="Deep ocean view" class="ocean-hero-banner" loading="lazy">
+      <div class="welcome-banner">
+        <h1>Welcome, <span id="player-name">Explorer</span>!</h1>
+        <p>Dive into ocean science and earn rewards as you learn.</p>
+        <div class="level-bar">
+          <span id="level-display">🌱 Sea Sprout</span>
+          <div class="progress-bar level-progress">
+            <div id="level-progress-fill" class="progress-fill"></div>
+          </div>
+          <span id="level-info" class="level-info-text"></span>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-value" id="total-points">0</div>
+          <div class="stat-label">Points</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏅</div>
+          <div class="stat-value" id="total-badges">0</div>
+          <div class="stat-label">Badges</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div class="stat-value" id="modules-completed">0/6</div>
+          <div class="stat-label">Modules</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-value" id="rank-display">--</div>
+          <div class="stat-label">Rank</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-value" id="streak-display">0 days</div>
+          <div class="stat-label">Streak</div>
+        </div>
+      </div>
+
+      <div class="badges-section">
+        <h2>🏅 Your Badges</h2>
+        <div id="badges-container" class="badges-grid">
+          <p class="empty-state">Complete modules and challenges to earn badges!</p>
+        </div>
+      </div>
+
+      <div class="activity-section">
+        <h2>📋 Recent Activity</h2>
+        <div id="recent-activity">
+          <p class="empty-state">Start exploring to build your activity log!</p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <button id="reset-btn" class="btn btn-danger-outline">🔄 Reset All Progress</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Learning Modules Section -->
+  <section id="modules" class="section">
+    <div class="container">
+      <img src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=900&h=250&fit=crop&q=80" alt="Coral reef underwater" class="ocean-hero-banner" loading="lazy">
+      <h1>📚 Learning Modules</h1>
+      <p class="section-subtitle">Explore ocean science topics and earn points as you learn. Each module contains key facts, "Did You Know?" sections, and key terms.</p>
+      <div id="modules-grid" class="modules-grid"></div>
+    </div>
+  </section>
+
+  <!-- Challenges Section -->
+  <section id="challenges" class="section">
+    <div class="container">
+      <img src="https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=900&h=250&fit=crop&q=80" alt="Sea turtle swimming" class="ocean-hero-banner" loading="lazy">
+      <h1>🏆 Marine Challenges</h1>
+      <p class="section-subtitle">Apply your knowledge to real-world ocean conservation problems. Write your responses to earn points!</p>
+      <div id="challenges-list" class="challenges-list"></div>
+    </div>
+  </section>
+
+  <!-- Quiz Section -->
+  <section id="quiz" class="section">
+    <div class="container">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&h=250&fit=crop&q=80" alt="Ocean waves at sunset" class="ocean-hero-banner" loading="lazy">
+      <h1>🧠 Ocean Science Quiz</h1>
+      <div id="quiz-container">
+        <div id="quiz-intro" class="quiz-intro-card">
+          <div class="quiz-intro-icon">🧠</div>
+          <h2>Ready to Test Your Knowledge?</h2>
+          <p>Answer 10 randomly selected questions from a bank of 30. Each correct answer earns you <strong>10 points</strong>. Get a perfect score to earn the <strong>Quiz Master</strong> badge!</p>
+          <ul class="quiz-rules">
+            <li>📝 10 questions per quiz</li>
+            <li>⭐ 10 points per correct answer</li>
+            <li>🔄 New questions each time you play</li>
+            <li>💡 Learn from explanations after each answer</li>
+          </ul>
+          <button id="start-quiz-btn" class="btn btn-primary btn-lg">Start Quiz</button>
+        </div>
+        <div id="quiz-area" class="hidden">
+          <div class="quiz-progress">
+            <span>Question <span id="quiz-current">1</span> of <span id="quiz-total">10</span></span>
+            <div class="progress-bar">
+              <div id="quiz-progress-fill" class="progress-fill"></div>
+            </div>
+          </div>
+          <div id="quiz-question" class="quiz-question"></div>
+          <div id="quiz-options" class="quiz-options"></div>
+          <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+          <button id="quiz-next-btn" class="btn btn-primary hidden">Next Question</button>
+        </div>
+        <div id="quiz-results" class="hidden">
+          <h2>Quiz Complete!</h2>
+          <div id="quiz-score" class="quiz-score"></div>
+          <button id="quiz-retry-btn" class="btn btn-primary btn-lg">Play Again 🔄</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leaderboard Section -->
+  <section id="leaderboard" class="section">
+    <div class="container">
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&h=250&fit=crop&q=80" alt="Whale underwater" class="ocean-hero-banner" loading="lazy">
+      <h1>🏅 Leaderboard</h1>
+      <p class="section-subtitle">See how you rank among ocean explorers from around the world!</p>
+      <div class="leaderboard-table-wrapper">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Explorer</th>
+              <th>Region</th>
+              <th>Points</th>
+              <th>Badges</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visitors Section -->
+  <section id="visitors" class="section">
+    <div class="container">
+      <h1>👥 Site Visitors</h1>
+      <p class="section-subtitle">Everyone who has visited OceanQuest. Welcome to our growing community!</p>
+      <div class="visitors-stats">
+        <div class="visitor-stat-pill">
+          <span class="visitor-stat-number" id="visitor-count">0</span>
+          <span class="visitor-stat-label">Total Visitors</span>
+        </div>
+      </div>
+      <div class="visitors-table-wrapper">
+        <table class="visitors-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Department</th>
+              <th>Visited On</th>
+            </tr>
+          </thead>
+          <tbody id="visitors-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suggestions Section -->
+  <section id="suggestions" class="section">
+    <div class="container">
+      <h1>💡 Suggestions</h1>
+      <p class="section-subtitle">We value your feedback! Share your ideas to help us improve OceanQuest.</p>
+      <div class="suggestion-form-card">
+        <h3>Submit a Suggestion</h3>
+        <form id="suggestion-form">
+          <div class="form-group">
+            <label for="suggestion-name">Your Name</label>
+            <input type="text" id="suggestion-name" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label for="suggestion-topic">Topic</label>
+            <select id="suggestion-topic" required>
+              <option value="">Select a topic</option>
+              <option value="Content">Content & Modules</option>
+              <option value="UI/UX">UI / UX Design</option>
+              <option value="Quiz">Quiz & Challenges</option>
+              <option value="Features">New Features</option>
+              <option value="Bug">Bug Report</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="suggestion-text">Your Suggestion</label>
+            <textarea id="suggestion-text" rows="5" placeholder="Describe your idea or feedback..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Rate OceanQuest</label>
+            <div class="star-rating" id="star-rating">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+              <span class="star" data-value="6">★</span>
+              <span class="star" data-value="7">★</span>
+            </div>
+            <input type="hidden" id="suggestion-rating" value="0">
+            <span class="star-rating-label" id="star-rating-label">Click a star to rate</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">📨 Submit Suggestion</button>
+        </form>
+      </div>
+
+      <!-- Average Rating Display -->
+      <div class="rating-summary" id="rating-summary">
+        <h3>⭐ Community Rating</h3>
+        <div class="rating-big" id="rating-big-value">—</div>
+        <div class="rating-stars-display" id="rating-stars-display"></div>
+        <span class="rating-count" id="rating-count">No ratings yet</span>
+      </div>
+
+      <div id="suggestions-list" class="suggestions-list">
+        <h3>Recent Suggestions</h3>
+        <div id="suggestions-cards"></div>
+        <p id="no-suggestions" class="empty-state">No suggestions yet. Be the first to share your ideas!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developers Section -->
+  <section id="developers" class="section">
+    <div class="container">
+      <h1>👨‍💻 Meet the Developers</h1>
+      <p class="section-subtitle">This platform was built with passion for ocean science education.</p>
+      <div class="dev-grid">
+        <div class="dev-card">
+          <div class="dev-photo-wrapper">
+            <img src="photos/sifat.jpg.jpg" alt="G.M Sifat Iqbal" class="dev-photo">
+          </div>
+          <h3>G.M Sifat Iqbal</h3>
+          <p class="dev-dept">Department of EEE</p>
+          <p class="dev-uni">Metropolitan University, Sylhet</p>
+        </div>
+        <div class="dev-card">
+          <div class="dev-photo-wrapper">
+            <img src="photos/ratul.png.jpg" alt="Ratul Chakraborty" class="dev-photo">
+          </div>
+          <h3>Ratul Chakraborty</h3>
+          <p class="dev-dept">Department of CSE</p>
+          <p class="dev-uni">Metropolitan University, Sylhet</p>
+        </div>
+      </div>
+      <div class="dev-footer">
+        <p>🌊 OceanQuest &copy; 2026 — Metropolitan University, Sylhet</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Module Detail Modal -->
+  <div id="module-modal" class="modal hidden">
+    <div class="modal-content module-modal-content">
+      <button class="modal-close">&times;</button>
+      <h2 id="modal-title"></h2>
+      <div id="modal-body" class="module-body"></div>
+      <button id="modal-complete-btn" class="btn btn-primary btn-lg">✓ Mark as Complete (+50 pts)</button>
+    </div>
+  </div>
+
+  <!-- Challenge Modal -->
+  <div id="challenge-modal" class="modal hidden">
+    <div class="modal-content challenge-modal-content">
+      <button class="modal-close">&times;</button>
+      <h2 id="challenge-modal-title"></h2>
+      <p id="challenge-prompt" class="challenge-prompt-text"></p>
+      <p id="challenge-hint" class="challenge-hint-text"></p>
+      <textarea id="challenge-response" class="challenge-textarea" rows="6" placeholder="Write your response here (minimum 10 words)..."></textarea>
+      <div class="challenge-footer">
+        <span id="challenge-word-count" class="word-count">0 words</span>
+        <button id="challenge-submit-btn" class="btn btn-primary" disabled>Submit Response</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="notification" class="notification hidden">
+    <span id="notification-text"></span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-brand">🌊 OceanQuest</div>
+    <p class="footer-text">Gamified Ocean Science Education for the Global South<br>&copy; 2026 Metropolitan University, Sylhet</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
